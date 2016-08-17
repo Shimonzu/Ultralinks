@@ -50,15 +50,3 @@ downloading the product
 #####During Update:  
 1. Re-emphasize the features that each user hasn't been using, and the additional value that is provided by these features.  
 2. If possible, provide again, a quick video showing how to customize Ultralinks.  
-
-
-An in-depth explanation of your process
-What algorithms and techniques did you use?
-How did you validate your results?
-What interesting insights did you gain?
-Code walk-through
-Give an overview of what each section of your code does.
-Make it clear to the reader of your repo how they should navigate your code.
-If you have a particular bit of code you think is clever or where the meat of your work is, make sure to point it out. If you tell them what to look at, they will listen.
-How to run on my own
-Give instructions for how to run your code on their computer (e.g. Run python scraper.py to collect the data, then run...)
