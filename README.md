@@ -32,14 +32,14 @@ actionable recommendations that will reduce churn. Here is a link to my code:
 These recommendations are binned into three different categories that represent the times which Ultralinks is able to communicate
 with their customers:
 
-Prior to Product Download (while the user is browsing the Ultralinks website):  
+#####Prior to Product Download (while the user is browsing the Ultralinks website):  
 1.  Make sure newWindowLinks feature defaults to OFF  
 2.  Make sure replaceHyperlinks feature defaults to OFF  
 3.  Emphasize the hover feature and the fact that hoverTime can be customized  
 4.  Further emphasize the customizability of the Ultralinks settings  
 5.  Optimize further for non-Chrome browsers  
 
-During Product Download:  
+#####During Product Download:  
 1. Instruct users to set additional languages and countries  
 2. Provide quick links and instructions so users can download Ultralinks to browsers other than the one in which they are
 downloading the product  
@@ -47,7 +47,7 @@ downloading the product
 4. Emphasize the hover feature and it's customizability again.  
 5. If possible, provide a very quick video showing how to customize Ultralinks.  
 
-During Update:  
+#####During Update:  
 1. Re-emphasize the features that each user hasn't been using, and the additional value that is provided by these features.  
 2. If possible, provide again, a quick video showing how to customize Ultralinks.  
 
