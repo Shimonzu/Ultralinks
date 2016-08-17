@@ -5,24 +5,24 @@ the product is experiencing a high amount of churn. My goal with this project wa
 this churn. 
 
 ###Models Used
-*Logistic Regression
-*Ridge Regression
-*Lasso Regression
-*SVM
-*Random Forest
-*AdaBoost
-*Gradient Boosting
-*Survival (Kaplan-Meier, Cox Proportional Hazard)
+* Logistic Regression
+* Ridge Regression
+* Lasso Regression
+* SVM
+* Random Forest
+* AdaBoost
+* Gradient Boosting
+* Survival (Kaplan-Meier, Cox Proportional Hazard)
 
 ###Tools Used
-*Pandas
-*Numpy
-*SciPy
-*SciKitLearn
-*GridSearch
-*StatsModels
-*imblearn
-*R-survival
+* Pandas
+* Numpy
+* SciPy
+* SciKitLearn
+* GridSearch
+* StatsModels
+* imblearn
+* R-survival
 
 I used a number of classification models to predict whether customers would churn or not. The model that generated the highest
 true positive rate was a gradient boosted decision tree. From that model, I extracted the feature importances and made
