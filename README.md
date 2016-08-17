@@ -24,6 +24,7 @@ this churn.
 * imblearn
 * R-survival
 
+###Process and Recommendations
 I used a number of classification models to predict whether customers would churn or not. The model that generated the highest
 true positive rate was a gradient boosted decision tree. From that model, I extracted the feature importances and made
 actionable recommendations that will reduce churn. Here is a link to my code:
