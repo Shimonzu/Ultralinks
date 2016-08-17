@@ -32,11 +32,11 @@ These recommendations are binned into three different categories that represent 
 with their customers:
 
 Prior to Product Download (while the user is browsing the Ultralinks website):
-1. Make sure newWindowLinks feature defaults to OFF
-2. Make sure replaceHyperlinks feature defaults to OFF
-3. Emphasize the hover feature and the fact that hoverTime can be customized
-4. Further emphasize the customizability of the Ultralinks settings
-5. Optimize further for non-Chrome browsers
+1.  Make sure newWindowLinks feature defaults to OFF
+2.  Make sure replaceHyperlinks feature defaults to OFF
+3.  Emphasize the hover feature and the fact that hoverTime can be customized
+4.  Further emphasize the customizability of the Ultralinks settings
+5.  Optimize further for non-Chrome browsers
 
 During Product Download:
 1. Instruct users to set additional languages and countries
