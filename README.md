@@ -4,6 +4,8 @@ Ultralinks is a web browser extension that is intended to make the web search ex
 the product is experiencing a high amount of churn. My goal with this project was to make actionable recommendations to reduce
 this churn. 
 
+Unfortunately, due to the proprietary nature of the Ultralink data, I'm not able to share that, but please see the process description below as well as my code used to process the data.
+
 ###Models Used
 * Logistic Regression
 * Ridge Regression
