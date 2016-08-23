@@ -233,6 +233,7 @@ def get_df(u_data):
     udf = u_data.drop(['time_active_in_days', 'age_in_days','time_active<1hour', 'time_active<1day', 'uuid', 'Language', 'Country', 'registration','reg_date', 'num', 'last_checkin', 'last_checkin_date', 'time_active_in_sec', 'time_active', 'last_checkin_date_only', 'age', 'age_in_hours', 'days_since_last_checkin', 'churn', 'inactive1', 'inactive1-7','inactive7-15','inactive15-30'], axis = 1)
     return udf
 
+#Running lasso for feature selection. This function will generate a graph that shows which variables converge to zero the fastest.
 def run_lasso(df):
     df1 = df.copy()
     y = df1.pop('anti_churn')
@@ -253,6 +254,7 @@ def run_lasso(df):
         plt.plot(alphas, param)
     plt.show()
 
+#Running ridge for feature selection. This function will generate a graph that shows which variables approach to zero the soonest.
 def run_ridge(df):
     df1 = df.copy()
     y = df1.pop('anti_churn')
@@ -280,6 +282,7 @@ def run_ridge(df):
     plt.legend()
     plt.show()
 
+#Because the class imbalance was so high, I've utilized this function to SMOTE the data to various, better balances.
 def SMT(df, target):
     df1 = df.copy()
     y = df1.pop('anti_churn')
@@ -293,6 +296,7 @@ def SMT(df, target):
     y_resampled.columns = ['anti_churn']
     return X_resampled, y_resampled
 
+#This function will run AdaptiveBoosting on the data it is fed, and will return a few different performance metrics.
 def ada_boost(X,y, nf = 2, ne = 50, lr=1):
     y = y.astype(float)
     Xs = X.astype(float)
@@ -351,6 +355,7 @@ def ada_boost(X,y, nf = 2, ne = 50, lr=1):
     _ = plt.xlabel('Relative importance', fontsize=18)
     return my_ada
 
+#This will run a random forest on the data it is fed.
 def random_forest(X,y, nf = 2, ne = 100, mf = 5):
     col_names = X.columns
     y = y.astype(float)
@@ -411,6 +416,7 @@ def random_forest(X,y, nf = 2, ne = 100, mf = 5):
     _ = plt.xlabel('Relative importance', fontsize=18)
     return rf
 
+#This will run gradient boosting on the dat it is fed.
 def gradient_boosting(X,y, nf = 2, lr = .1, ne = 100):
     col_names = X.columns
     y = y.astype(float)
@@ -471,6 +477,8 @@ def gradient_boosting(X,y, nf = 2, lr = .1, ne = 100):
     _ = plt.xlabel('Relative importance', fontsize=18)
     return Gboost
 
+#This function will run a grid search for AdaBoost and will return the best score and the best parameters according to
+#the precision metric. I chose precision because I'm primarily interested in the true positive rate.
 def ada_Grid(X,y, ne = [10,50,100,200,300,500,700,800,900,1000], lr = [.8,.9,1,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8]):
     k = y.shape[0]
     parameter_grid = {'n_estimators':ne, 'learning_rate':lr}
@@ -481,6 +489,8 @@ def ada_Grid(X,y, ne = [10,50,100,200,300,500,700,800,900,1000], lr = [.8,.9,1,1
     print "Best parameters: ", g.best_params_
     return g.best_params_
 
+#This function will run a grid search for Random Forest and will return the best score and the best parameters according to
+#the precision metric. I chose precision because I'm primarily interested in the true positive rate.
 def rf_Grid(X,y,ne=[10,20,50,100,200,300,400,500,750,1000], mf=[2,4,8,12,16,20,24]):
     k = y.shape[0]
     y = y.astype(float)
@@ -493,11 +503,15 @@ def rf_Grid(X,y,ne=[10,20,50,100,200,300,400,500,750,1000], mf=[2,4,8,12,16,20,2
     print "Best parameters: ", g.best_params_
     return g.best_params_
 
+#In addition to running several classification algorithms, I also was interested in understanding how much longer each recommendation
+#would extend the life of a customer. Because R performs survival analysis better than Python, I had to extract a slightly different
+#data set from Python so I could run the survival model in R. This function creates the appropriate data set to run that analysis.
 def get_survival_data(u_data):
     u_data['anti_churn'] = 1 - u_data['churn']
     udf = u_data.drop(['time_active_in_days', 'time_active<1hour', 'time_active<1day', 'uuid', 'Language', 'Country', 'registration','reg_date', 'num', 'last_checkin', 'last_checkin_date', 'time_active_in_sec', 'time_active', 'last_checkin_date_only', 'age', 'age_in_hours', 'days_since_last_checkin', 'churn', 'inactive1', 'inactive1-7','inactive7-15','inactive15-30'], axis = 1)
     return udf
 
+#This function will run a gradient boosted Grid Search. It is customized for my needs.
 def gb_Grid(X,y, nf = 3, lr = [.1,.2,.3,.4,.5,.6,.7,.8,.9,1], ne = [10,50,100,200,300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500]):
     col_names = X.columns
     y = y.astype(float)
@@ -563,25 +577,40 @@ def gb_Grid(X,y, nf = 3, lr = [.1,.2,.3,.4,.5,.6,.7,.8,.9,1], ne = [10,50,100,20
 
 
 if __name__ == '__main__':
+    #This first function pulls data from the orignal sources and cleans it, and feature engineers it in preparation for the subsequent
+    #data analysis.
     u_data, uclicks, ucheckins = feature_engineering()
+
+    #For convenience and backup, I've duplicated the data.
     udf = get_df(u_data)
+
+    #The following code chunk utilizes the SMT (smote) function and addresses the class imbalance to different degrees of balance.
+    #This data will be used for subsequent modeling.
     X10, y10 = SMT(udf, .1112)
     X20, y20 = SMT(udf, .25001)
     X30, y30 = SMT(udf, .42861)
     X40, y40 = SMT(udf, .6667)
     X50, y50 = SMT(udf, .99999999999999999)
+
+    #This will generate the data to be used in the survival analysis.
     survival_data = get_survival_data(u_data)
+
+    #The following code chunk will run the adaboost grid search on the various SMOTE-balanced data sets.
     # ada_Grid(X10,y10)
     # ada_Grid(X20,y20)
     # ada_Grid(X30,y30)
     # ada_Grid(X40,y40)
     # ada_Grid(X50,y50)
+
+    #The following code chunk will run the random forest grid search on the various SMOTE-balanced data sets.
     # rf_Grid(X10,y10)
     # rf_Grid(X20,y20)
     # rf_Grid(X30,y30)
     # rf_Grid(X40,y40)
     # rf_Grid(X50,y50)
 
+    #The several following code chunks perform the last iterations of Grid Search to identify the best parameters.
+    #The best precision scores and the best parameters are also provided for reference.
     #ada_boost(X10, y10, nf = 3, ne = 450, lr=1.3)
     # Best score:  0.644242996538
     # Best parameters:  {'n_estimators': 100, 'learning_rate': 1.6}
@@ -602,7 +631,7 @@ if __name__ == '__main__':
     # #Best score:  0.70155675008
     # #Best parameters:  {'n_estimators': 700, 'learning_rate': 1.8}
 
-    rf_Grid(X10,y10,ne=[150,200,250,400], mf=[1,2,3,4])
+    #rf_Grid(X10,y10,ne=[150,200,250,400], mf=[1,2,3,4])
     # Best score:  0.834973305731
     # Best parameters:  {'max_features': 3, 'n_estimators': 250}
 
@@ -614,7 +643,7 @@ if __name__ == '__main__':
     # # Best score:  0.685458338107
     # # Best parameters:  {'max_features': 2, 'n_estimators': 12}
 
-    rf_Grid(X40,y40,ne=[5,7,9,10,12,14,15], mf=[10,11,12,13,14])
+    #rf_Grid(X40,y40,ne=[5,7,9,10,12,14,15], mf=[10,11,12,13,14])
     # Best score:  0.752268550875
     # Best parameters:  {'max_features': 12, 'n_estimators': 14}
 
@@ -622,21 +651,11 @@ if __name__ == '__main__':
     # # Best score:  0.658360724325
     # # Best parameters:  {'max_features': 1, 'n_estimators': 70}
 
-    mean_dct10, final_dct10, final_list10 = gb_Grid(X10,y10)
-    mean_dct20, final_dct20, final_list20 = gb_Grid(X20,y20)
-    mean_dct30, final_dct30, final_list30 = gb_Grid(X30,y30)
-    mean_dct40, final_dct40, final_list40 = gb_Grid(X40,y40)
-    mean_dct50, final_dct50, final_list50 = gb_Grid(X50,y50)
-
-# uuid_counts_by_ip = checkins.groupby('ip').count()['uuid']
-# uuid_counts_by_ip = pd.DataFrame(uuid_counts_by_ip)
-# uuid_counts_by_ip['IP'] = uuid_counts_by_ip.index
-# #one_uuid = uuid_counts_by_ip == 1
-# #one_uuid = set(one_uuid)
-# m1 = pd.merge(master_data, uuid_counts_by_ip, how = 'left', left_on = 'ip', right_on = 'IP')
-#
-#
-# ip_counts_by_uuid = checkins.groupby('uuid').count()['ip']
-# ip_counts_by_uuid = pd.DataFrame(ip_counts_by_uuid)
-# ip_counts_by_uuid['UUID'] = ip_counts_by_uuid.index
-# mu = pd.merge(master_data, ip_counts_by_uuid, how = 'left', left_on = 'ip', right_on='ip')
+    #In order to get a a Gradient Boosting grid search to work as I neded it, I created my own Grid Search function,
+    #and ran it on each of the SMOTE-balanced data sets. The output will be a list of precision scores, from which
+    #the best parameters can be identified.
+    # mean_dct10, final_dct10, final_list10 = gb_Grid(X10,y10)
+    # mean_dct20, final_dct20, final_list20 = gb_Grid(X20,y20)
+    # mean_dct30, final_dct30, final_list30 = gb_Grid(X30,y30)
+    # mean_dct40, final_dct40, final_list40 = gb_Grid(X40,y40)
+    # mean_dct50, final_dct50, final_list50 = gb_Grid(X50,y50)
