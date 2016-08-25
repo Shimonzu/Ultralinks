@@ -31,7 +31,7 @@ I used a number of classification models to predict whether customers would chur
 true positive rate was a gradient boosted decision tree. From that model, I extracted the feature importances and made
 actionable recommendations that will reduce churn. Click on the [Ultralink_Code](https://github.com/Shimonzu/Ultralinks/blob/master/Ultralinks_Code.py) file to see my code:
 
-These recommendations are binned into three different categories that represent the times which Ultralinks is able to communicate
+Because there is no requirement to create an Ultralinks account, or provide an email address in order to download the Ultralinks product, there is no way for Ultralinks to communicate with it's customers except on the Ultarlinks website, during product download, and during subsequent product updates. For that reason, these recommendations are binned into three different categories that represent the times which Ultralinks is able to communicate
 with their customers:
 
 #####Prior to Product Download (while the user is browsing the Ultralinks website):  
